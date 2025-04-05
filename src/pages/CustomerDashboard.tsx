@@ -1,299 +1,211 @@
 
 import { useEffect } from "react";
-import { useAuth } from "@/contexts/AuthContext";
 import { Link } from "react-router-dom";
-import Header from "@/components/Header";
-import { 
-  Card, 
-  CardContent, 
-  CardDescription, 
-  CardHeader, 
-  CardTitle,
-  CardFooter
-} from "@/components/ui/card";
+import { useAuth } from "@/contexts/AuthContext";
+import { useData } from "@/contexts/DataContext";
+import CustomerLayout from "@/components/layouts/CustomerLayout";
 import { Button } from "@/components/ui/button";
-import {
-  Plane,
-  CreditCard,
-  Map,
-  Calendar,
-  Clock,
-  Award,
-  ChevronRight,
-  Search
-} from "lucide-react";
-import { Input } from "@/components/ui/input";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { 
+  Table, 
+  TableBody, 
+  TableCaption, 
+  TableCell, 
+  TableHead, 
+  TableHeader, 
+  TableRow 
+} from "@/components/ui/table";
 
 const CustomerDashboard = () => {
   const { user } = useAuth();
+  const { 
+    flights, 
+    bookings, 
+    getAirportById,
+    getFlightById,
+    reviews,
+    walletBalance,
+  } = useData();
 
   useEffect(() => {
-    // Set document title when component mounts
-    document.title = "My Dashboard - FireWings";
+    document.title = "Customer Dashboard - FireWings";
   }, []);
 
+  // Filter for user bookings
+  const userBookings = bookings.filter(
+    booking => booking.userId === user?.email
+  ).sort((a, b) => new Date(b.bookingDate).getTime() - new Date(a.bookingDate).getTime());
+
+  const recentBookings = userBookings.slice(0, 3);
+  const confirmedBookings = userBookings.filter(b => b.status === "confirmed").length;
+  const totalSpent = userBookings.reduce((sum, booking) => sum + booking.totalAmount, 0);
+
+  // Featured flights
+  const featuredFlights = flights.slice(0, 3);
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-purple-50">
-      <Header />
-      
-      <main className="container mx-auto pt-24 pb-10 px-4 md:px-6">
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold mb-2">My Dashboard</h1>
-          <p className="text-muted-foreground">
-            Welcome back, {user?.name}. Ready for your next adventure?
-          </p>
-        </div>
-        
-        {/* Search Flight Section */}
-        <Card className="mb-8">
-          <CardHeader>
-            <CardTitle>Search for Flights</CardTitle>
-            <CardDescription>
-              Find your next destination with FireWings
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <form className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-              <div>
-                <label className="block text-sm font-medium mb-2">From</label>
-                <div className="relative">
-                  <Plane className="absolute left-3 top-3 h-4 w-4 text-gray-400 rotate-45" />
-                  <Input className="pl-10" placeholder="Departure City" />
-                </div>
-              </div>
-              
-              <div>
-                <label className="block text-sm font-medium mb-2">To</label>
-                <div className="relative">
-                  <Plane className="absolute left-3 top-3 h-4 w-4 text-gray-400 -rotate-45" />
-                  <Input className="pl-10" placeholder="Arrival City" />
-                </div>
-              </div>
-              
-              <div>
-                <label className="block text-sm font-medium mb-2">Departure</label>
-                <div className="relative">
-                  <Calendar className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
-                  <Input className="pl-10" type="date" />
-                </div>
-              </div>
-              
-              <div>
-                <label className="block text-sm font-medium mb-2">Return</label>
-                <div className="relative">
-                  <Calendar className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
-                  <Input className="pl-10" type="date" />
-                </div>
-              </div>
-            </form>
-          </CardContent>
-          <CardFooter className="flex justify-end border-t pt-4">
-            <Button className="bg-gradient-firewings hover:opacity-90 transition-opacity flex items-center gap-2">
-              <Search className="h-4 w-4" />
-              Search Flights
-            </Button>
-          </CardFooter>
-        </Card>
-        
-        {/* User Stats */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+    <CustomerLayout title="My Dashboard">
+      <div className="space-y-6">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <Card>
             <CardHeader className="pb-2">
-              <CardTitle className="flex items-center gap-2 text-lg">
-                <Plane className="h-5 w-5 text-firewings-purple" />
-                Total Flights
-              </CardTitle>
+              <CardTitle className="text-lg">My Bookings</CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-3xl font-bold">12</p>
-              <p className="text-xs text-muted-foreground mt-1">
-                2 flights this month
+              <p className="text-3xl font-bold">{userBookings.length}</p>
+              <p className="text-sm text-muted-foreground">
+                {confirmedBookings} active bookings
               </p>
+              <Link to="/customer/bookings">
+                <Button variant="outline" className="mt-4" size="sm">View All Bookings</Button>
+              </Link>
             </CardContent>
           </Card>
           
           <Card>
             <CardHeader className="pb-2">
-              <CardTitle className="flex items-center gap-2 text-lg">
-                <Map className="h-5 w-5 text-firewings-blue" />
-                Miles Traveled
-              </CardTitle>
+              <CardTitle className="text-lg">Wallet Balance</CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-3xl font-bold">24,385</p>
-              <p className="text-xs text-muted-foreground mt-1">
-                Equivalent to 0.98 times around the Earth
+              <p className="text-3xl font-bold">₹{walletBalance.toLocaleString()}</p>
+              <p className="text-sm text-muted-foreground">
+                Total spent: ₹{totalSpent.toLocaleString()}
               </p>
+              <Link to="/customer/wallet">
+                <Button variant="outline" className="mt-4" size="sm">Manage Wallet</Button>
+              </Link>
             </CardContent>
           </Card>
           
           <Card>
             <CardHeader className="pb-2">
-              <CardTitle className="flex items-center gap-2 text-lg">
-                <Award className="h-5 w-5 text-amber-500" />
-                Rewards Points
-              </CardTitle>
+              <CardTitle className="text-lg">Available Flights</CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-3xl font-bold">4,650</p>
-              <p className="text-xs text-muted-foreground mt-1">
-                Next tier at 5,000 points
+              <p className="text-3xl font-bold">{flights.length}</p>
+              <p className="text-sm text-muted-foreground">
+                Book your next journey now
               </p>
+              <Link to="/customer/flights">
+                <Button variant="outline" className="mt-4" size="sm">View Flights</Button>
+              </Link>
             </CardContent>
           </Card>
         </div>
         
-        {/* Upcoming Flights */}
-        <Card className="mb-8">
-          <CardHeader>
-            <CardTitle>Upcoming Flights</CardTitle>
-            <CardDescription>
-              Your scheduled journeys with FireWings
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-6">
-              {[
-                {
-                  flightNumber: "FW-1234",
-                  from: "New York (JFK)",
-                  to: "Los Angeles (LAX)",
-                  departureDate: "April 15, 2025",
-                  departureTime: "08:30 AM",
-                  status: "Confirmed"
-                },
-                {
-                  flightNumber: "FW-5678",
-                  from: "Los Angeles (LAX)",
-                  to: "New York (JFK)",
-                  departureDate: "April 22, 2025",
-                  departureTime: "06:15 PM",
-                  status: "Pending"
-                }
-              ].map((flight, index) => (
-                <div key={index} className="border rounded-lg p-4">
-                  <div className="flex flex-col md:flex-row md:items-center justify-between mb-4">
-                    <div>
-                      <span className="text-xs text-muted-foreground">Flight</span>
-                      <h4 className="text-lg font-semibold">{flight.flightNumber}</h4>
-                    </div>
-                    <div>
-                      <span className={`
-                        inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium
-                        ${flight.status === "Confirmed" ? "bg-green-100 text-green-800" : "bg-yellow-100 text-yellow-800"}
-                      `}>
-                        {flight.status}
-                      </span>
-                    </div>
-                  </div>
-                  
-                  <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
-                    <div className="col-span-2">
-                      <div className="flex items-center">
-                        <div className="flex-shrink-0">
-                          <Plane className="h-4 w-4 text-firewings-purple" />
-                        </div>
-                        <div className="ml-2">
-                          <div className="text-sm font-medium">{flight.from}</div>
-                          <div className="text-xs text-muted-foreground">From</div>
-                        </div>
-                      </div>
-                    </div>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <Card>
+            <CardHeader>
+              <CardTitle>Recent Bookings</CardTitle>
+              <CardDescription>Your latest travel plans</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Flight</TableHead>
+                    <TableHead>Date</TableHead>
+                    <TableHead>Status</TableHead>
+                    <TableHead>Actions</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {recentBookings.map((booking) => {
+                    const flight = getFlightById(booking.flightId);
+                    const departureAirport = flight ? getAirportById(flight.departureAirportId) : null;
+                    const arrivalAirport = flight ? getAirportById(flight.arrivalAirportId) : null;
                     
-                    <div className="col-span-1 flex justify-center">
-                      <div className="h-0.5 w-full bg-gray-200 self-center relative">
-                        <ChevronRight className="absolute top-1/2 left-1/2 transform -translate-y-1/2 -translate-x-1/2 h-4 w-4 text-gray-400" />
+                    return (
+                      <TableRow key={booking.id}>
+                        <TableCell>
+                          {flight && departureAirport && arrivalAirport ? (
+                            <div className="font-medium">
+                              {departureAirport.code} → {arrivalAirport.code}
+                            </div>
+                          ) : (
+                            "Unknown Flight"
+                          )}
+                        </TableCell>
+                        <TableCell>
+                          {flight ? new Date(flight.departureTime).toLocaleDateString() : "-"}
+                        </TableCell>
+                        <TableCell>
+                          <span 
+                            className={`px-2 py-1 rounded text-xs ${
+                              booking.status === "confirmed" ? "bg-green-100 text-green-800" : 
+                              booking.status === "cancelled" ? "bg-red-100 text-red-800" : 
+                              "bg-yellow-100 text-yellow-800"
+                            }`}
+                          >
+                            {booking.status}
+                          </span>
+                        </TableCell>
+                        <TableCell>
+                          {booking.status === "confirmed" && (
+                            <div className="flex space-x-2">
+                              <Link to={`/customer/ticket/${booking.id}`}>
+                                <Button variant="outline" size="sm">Ticket</Button>
+                              </Link>
+                            </div>
+                          )}
+                        </TableCell>
+                      </TableRow>
+                    );
+                  })}
+                  {recentBookings.length === 0 && (
+                    <TableRow>
+                      <TableCell colSpan={4} className="text-center text-muted-foreground">
+                        You have no bookings yet.
+                        <div className="mt-2">
+                          <Link to="/customer/flights">
+                            <Button size="sm">Browse Flights</Button>
+                          </Link>
+                        </div>
+                      </TableCell>
+                    </TableRow>
+                  )}
+                </TableBody>
+              </Table>
+            </CardContent>
+          </Card>
+          
+          <Card>
+            <CardHeader>
+              <CardTitle>Featured Flights</CardTitle>
+              <CardDescription>Recommended destinations for you</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-4">
+                {featuredFlights.map((flight) => {
+                  const departureAirport = getAirportById(flight.departureAirportId);
+                  const arrivalAirport = getAirportById(flight.arrivalAirportId);
+                  
+                  return (
+                    <div key={flight.id} className="flex items-center justify-between bg-gray-50 p-4 rounded-lg">
+                      <div>
+                        <div className="font-medium">
+                          {departureAirport?.city || "Unknown"} to {arrivalAirport?.city || "Unknown"}
+                        </div>
+                        <div className="text-sm text-muted-foreground">
+                          {new Date(flight.departureTime).toLocaleDateString()} • 
+                          {flight.flightNumber}
+                        </div>
+                      </div>
+                      <div className="text-right">
+                        <div className="font-semibold">₹{flight.price.toLocaleString()}</div>
+                        <Link to={`/customer/book/${flight.id}`}>
+                          <Button size="sm" className="mt-2">Book Now</Button>
+                        </Link>
                       </div>
                     </div>
-                    
-                    <div className="col-span-2">
-                      <div className="flex items-center">
-                        <div className="flex-shrink-0">
-                          <Plane className="h-4 w-4 text-firewings-blue" />
-                        </div>
-                        <div className="ml-2">
-                          <div className="text-sm font-medium">{flight.to}</div>
-                          <div className="text-xs text-muted-foreground">To</div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4 pt-4 border-t">
-                    <div className="flex items-center">
-                      <Calendar className="h-4 w-4 text-gray-400" />
-                      <span className="ml-2 text-sm">{flight.departureDate}</span>
-                    </div>
-                    <div className="flex items-center">
-                      <Clock className="h-4 w-4 text-gray-400" />
-                      <span className="ml-2 text-sm">{flight.departureTime}</span>
-                    </div>
-                  </div>
-                  
-                  <div className="mt-4 pt-4 border-t flex justify-end">
-                    <Button variant="outline" className="mr-2">View Details</Button>
-                    <Button className="bg-gradient-firewings hover:opacity-90 transition-opacity">
-                      Check In
-                    </Button>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </CardContent>
-          <CardFooter className="flex justify-center border-t pt-4">
-            <Link 
-              to="#" 
-              className="text-sm text-primary hover:underline flex items-center"
-            >
-              View all flights
-              <ChevronRight className="h-4 w-4 ml-1" />
-            </Link>
-          </CardFooter>
-        </Card>
-        
-        {/* Quick Access Section */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {[
-            {
-              title: "My Bookings",
-              description: "View and manage your reservations",
-              icon: <Calendar className="h-6 w-6" />,
-              color: "bg-blue-100 text-blue-700"
-            },
-            {
-              title: "Flight Status",
-              description: "Check the status of any FireWings flight",
-              icon: <Plane className="h-6 w-6" />,
-              color: "bg-purple-100 text-purple-700"
-            },
-            {
-              title: "Payment Methods",
-              description: "Manage your cards and payment options",
-              icon: <CreditCard className="h-6 w-6" />,
-              color: "bg-green-100 text-green-700"
-            },
-            {
-              title: "Rewards Program",
-              description: "Check your points and redeem rewards",
-              icon: <Award className="h-6 w-6" />,
-              color: "bg-amber-100 text-amber-700"
-            }
-          ].map((item, index) => (
-            <Card key={index} className="hover:border-primary/50 transition-colors cursor-pointer">
-              <CardContent className="p-6 flex flex-col items-center text-center">
-                <div className={`rounded-full p-3 mb-4 ${item.color}`}>
-                  {item.icon}
-                </div>
-                <h3 className="text-lg font-medium mb-1">{item.title}</h3>
-                <p className="text-sm text-muted-foreground">
-                  {item.description}
-                </p>
-              </CardContent>
-            </Card>
-          ))}
+                  );
+                })}
+              </div>
+            </CardContent>
+          </Card>
         </div>
-      </main>
-    </div>
+      </div>
+    </CustomerLayout>
   );
 };
 
