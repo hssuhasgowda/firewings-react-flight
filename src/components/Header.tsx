@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
-import { Menu, X, LogOut } from "lucide-react";
+import { Menu, X, LogOut, Plane } from "lucide-react";
 
 const Header = () => {
   const { user, logout } = useAuth();
@@ -40,39 +40,48 @@ const Header = () => {
       <div className="container mx-auto flex justify-between items-center px-4">
         {/* Logo */}
         <Link to="/" className="flex items-center">
-          <span className="text-2xl font-bold text-transparent bg-clip-text bg-gradient-firewings firewings-shadow">
-            FireWings
-          </span>
-          <img 
-            src="https://cdn-icons-png.flaticon.com/512/5611/5611044.png" 
-            alt="FireWings Logo" 
-            className="w-8 h-8 ml-2 animate-float" 
-          />
+          <div className="flex items-center gap-2">
+            <Plane className="h-8 w-8 text-transparent bg-clip-text bg-gradient-firewings" strokeWidth={2.5} />
+            <span className="text-2xl font-bold text-transparent bg-clip-text bg-gradient-firewings firewings-shadow">
+              FireWings
+            </span>
+            <img 
+              src="https://cdn-icons-png.flaticon.com/512/5611/5611044.png" 
+              alt="FireWings Logo" 
+              className="w-8 h-8 ml-2 animate-float" 
+            />
+          </div>
         </Link>
 
         {/* Desktop Navigation */}
-        <nav className="hidden md:flex items-center space-x-6">
+        <nav className="hidden md:flex items-center gap-8">
           {user ? (
             <>
-              <Link to={user.role === "admin" ? "/admin" : "/customer"} className="hover:text-primary transition-colors">
+              <Link to={user.role === "admin" ? "/admin" : "/customer"} className="font-medium hover:text-primary transition-colors">
                 Dashboard
               </Link>
               <Button 
                 variant="ghost" 
                 onClick={logout}
-                className="flex items-center gap-1"
+                className="flex items-center gap-2 font-medium"
               >
                 <LogOut size={16} />
                 Logout
               </Button>
-              <span className="text-sm text-muted-foreground">
-                Welcome, {user.name}
-              </span>
+              <div className="px-4 py-2 bg-white/80 backdrop-blur-sm rounded-full shadow-sm">
+                <span className="text-sm font-medium text-gray-700">
+                  Welcome, {user.name}
+                </span>
+              </div>
             </>
           ) : (
             <>
-              <Link to="/login" className="hover:text-primary transition-colors">Login</Link>
-              <Link to="/register" className="hover:text-primary transition-colors">Register</Link>
+              <Link to="/login" className="font-medium hover:text-primary transition-colors">Login</Link>
+              <Link to="/register">
+                <Button className="bg-gradient-firewings hover:opacity-90 transition-opacity">
+                  Register
+                </Button>
+              </Link>
             </>
           )}
         </nav>
@@ -88,7 +97,7 @@ const Header = () => {
             <img 
               src="https://cdn-icons-png.flaticon.com/512/3670/3670051.png" 
               alt="WhatsApp" 
-              className="w-6 h-6" 
+              className="w-6 h-6 hover:scale-110 transition-transform" 
             />
           </a>
           <a 
@@ -100,7 +109,7 @@ const Header = () => {
             <img 
               src="https://cdn-icons-png.flaticon.com/512/733/733547.png" 
               alt="Facebook" 
-              className="w-6 h-6" 
+              className="w-6 h-6 hover:scale-110 transition-transform" 
             />
           </a>
           <a 
@@ -110,7 +119,7 @@ const Header = () => {
             <img 
               src="https://cdn-icons-png.flaticon.com/512/3125/3125713.png" 
               alt="Flight" 
-              className="w-6 h-6" 
+              className="w-6 h-6 hover:scale-110 transition-transform" 
             />
           </a>
         </div>
@@ -146,7 +155,7 @@ const Header = () => {
                     <LogOut size={16} />
                     Logout
                   </button>
-                  <div className="py-2 px-4 text-sm text-muted-foreground">
+                  <div className="py-2 px-4 text-sm font-medium bg-gray-50 rounded-md">
                     Welcome, {user.name}
                   </div>
                 </>
@@ -161,7 +170,7 @@ const Header = () => {
                   </Link>
                   <Link 
                     to="/register" 
-                    className="py-2 px-4 hover:bg-gray-100 rounded-md"
+                    className="py-2 px-4 bg-gradient-firewings text-white rounded-md"
                     onClick={toggleMenu}
                   >
                     Register
