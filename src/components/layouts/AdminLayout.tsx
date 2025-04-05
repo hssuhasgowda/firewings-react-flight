@@ -42,7 +42,7 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children, title }) => {
             <NavigationMenuList className="p-2">
               {navLinks.map((link) => (
                 <NavigationMenuItem key={link.path}>
-                  <Link to={link.path} legacyBehavior passHref>
+                  <Link to={link.path}>
                     <NavigationMenuLink 
                       className={navigationMenuTriggerStyle({
                         className: location.pathname === link.path 
