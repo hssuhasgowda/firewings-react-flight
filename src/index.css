@@ -34,6 +34,9 @@
     --ring: 246 80% 60%;
 
     --radius: 0.5rem;
+    
+    /* FireWings specific colors */
+    --firewings-blue: 220 70% 24%;
   }
 
   .dark {
@@ -90,6 +93,11 @@
   border-bottom: 1px solid rgba(255, 255, 255, 0.3);
 }
 
+.fw-header {
+  background-color: hsl(220, 70%, 24%);
+  background-image: linear-gradient(to right, hsl(220, 70%, 24%), hsl(220, 70%, 30%));
+}
+
 .animate-float {
   animation: float 6s ease-in-out infinite;
 }
@@ -129,6 +137,36 @@
 
 .bg-gradient-firewings {
   background: linear-gradient(135deg, #646cff, #61dafb);
+}
+
+/* FireWings logo styles */
+.firewings-logo {
+  font-size: 2rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  color: #fff;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+  display: flex;
+  align-items: center;
+}
+
+.firewings-logo-icon {
+  color: #FFB800;
+  margin-right: 0.5rem;
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+}
+
+.airplane-hero-bg {
+  background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('/lovable-uploads/4f936d51-6035-47e1-bec7-da67a1b3b475.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  min-height: 80vh;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  color: white;
 }
 
 /* Add this to your CSS */

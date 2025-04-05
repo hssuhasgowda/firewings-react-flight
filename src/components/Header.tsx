@@ -33,18 +33,16 @@ const Header = () => {
 
   return (
     <header 
-      className={`fixed w-full top-0 z-50 floating-header transition-all duration-300 ${
+      className={`fixed w-full top-0 z-50 fw-header transition-all duration-300 ${
         scrolled ? 'py-2' : 'py-4'
       }`}
     >
       <div className="container mx-auto flex justify-between items-center px-4">
         {/* Logo */}
         <Link to="/" className="flex items-center">
-          <div className="flex items-center gap-2">
-            <Plane className="h-8 w-8 text-transparent bg-clip-text bg-gradient-firewings" strokeWidth={2.5} />
-            <span className="text-2xl font-bold text-transparent bg-clip-text bg-gradient-firewings firewings-shadow">
-              FireWings
-            </span>
+          <div className="firewings-logo">
+            <Plane className="h-10 w-10 firewings-logo-icon" strokeWidth={2} />
+            <span>FireWings</span>
             <img 
               src="https://cdn-icons-png.flaticon.com/512/5611/5611044.png" 
               alt="FireWings Logo" 
@@ -57,28 +55,28 @@ const Header = () => {
         <nav className="hidden md:flex items-center gap-8">
           {user ? (
             <>
-              <Link to={user.role === "admin" ? "/admin" : "/customer"} className="font-medium hover:text-primary transition-colors">
+              <Link to={user.role === "admin" ? "/admin" : "/customer"} className="font-medium text-white hover:text-gray-200 transition-colors">
                 Dashboard
               </Link>
               <Button 
                 variant="ghost" 
                 onClick={logout}
-                className="flex items-center gap-2 font-medium"
+                className="flex items-center gap-2 font-medium text-white hover:text-gray-200"
               >
                 <LogOut size={16} />
                 Logout
               </Button>
-              <div className="px-4 py-2 bg-white/80 backdrop-blur-sm rounded-full shadow-sm">
-                <span className="text-sm font-medium text-gray-700">
+              <div className="px-4 py-2 bg-white/20 backdrop-blur-sm rounded-full shadow-sm">
+                <span className="text-sm font-medium text-white">
                   Welcome, {user.name}
                 </span>
               </div>
             </>
           ) : (
             <>
-              <Link to="/login" className="font-medium hover:text-primary transition-colors">Login</Link>
+              <Link to="/login" className="font-medium text-white hover:text-gray-200 transition-colors">Login</Link>
               <Link to="/register">
-                <Button className="bg-gradient-firewings hover:opacity-90 transition-opacity">
+                <Button className="bg-yellow-500 hover:bg-yellow-600 text-gray-900 font-bold hover:opacity-90 transition-opacity">
                   Register
                 </Button>
               </Link>
@@ -92,7 +90,7 @@ const Header = () => {
             href="https://whatsapp.com" 
             target="_blank" 
             rel="noopener noreferrer"
-            className="text-gray-600 hover:text-green-500 transition-colors"
+            className="text-white hover:text-gray-200 transition-colors"
           >
             <img 
               src="https://cdn-icons-png.flaticon.com/512/3670/3670051.png" 
@@ -104,7 +102,7 @@ const Header = () => {
             href="https://facebook.com" 
             target="_blank" 
             rel="noopener noreferrer"
-            className="text-gray-600 hover:text-blue-600 transition-colors"
+            className="text-white hover:text-gray-200 transition-colors"
           >
             <img 
               src="https://cdn-icons-png.flaticon.com/512/733/733547.png" 
@@ -114,7 +112,7 @@ const Header = () => {
           </a>
           <a 
             href="#" 
-            className="text-gray-600 hover:text-primary transition-colors"
+            className="text-white hover:text-gray-200 transition-colors"
           >
             <img 
               src="https://cdn-icons-png.flaticon.com/512/3125/3125713.png" 
@@ -126,7 +124,7 @@ const Header = () => {
 
         {/* Mobile Menu Button */}
         <button 
-          className="md:hidden text-gray-600" 
+          className="md:hidden text-white" 
           onClick={toggleMenu}
           aria-label="Toggle menu"
         >

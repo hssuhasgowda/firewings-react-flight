@@ -1,4 +1,3 @@
-
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
@@ -33,41 +32,31 @@ const Index = () => {
     <div className="min-h-screen flex flex-col">
       <Header />
       
-      {/* Hero Section */}
-      <section className="relative pt-36 pb-24 md:pt-40 md:pb-32 overflow-hidden">
-        {/* Background Gradient */}
-        <div className="absolute inset-0 bg-gradient-to-br from-blue-50 via-purple-50 to-blue-50 -z-10"></div>
-        
-        {/* Animated Background Elements */}
-        <div className="absolute inset-0 overflow-hidden -z-10">
-          <div className="firewings-shadow absolute -top-10 -left-10 w-64 h-64 bg-firewings-purple/10 rounded-full blur-3xl"></div>
-          <div className="firewings-shadow absolute top-1/3 right-0 w-96 h-96 bg-firewings-blue/10 rounded-full blur-3xl"></div>
-          <div className="firewings-shadow absolute bottom-0 left-1/4 w-80 h-80 bg-purple-500/5 rounded-full blur-3xl"></div>
-        </div>
-        
-        <div className="container mx-auto px-4">
+      {/* Hero Section with Airplane Background */}
+      <section className="airplane-hero-bg">
+        <div className="container mx-auto px-4 py-32 relative z-10">
           <div className="flex flex-col lg:flex-row items-center">
             <div className="lg:w-1/2 mb-10 lg:mb-0">
-              <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight">
-                <span className="text-transparent bg-clip-text bg-gradient-firewings firewings-shadow">
+              <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight text-white drop-shadow-lg">
+                <span className="text-yellow-400">
                   Take Flight
                 </span> <br />
                 with FireWings
               </h1>
-              <p className="text-xl mb-8 text-gray-700 max-w-lg">
+              <p className="text-xl mb-8 text-gray-100 max-w-lg drop-shadow-md">
                 Experience unparalleled comfort and service as you soar through the skies with the most reliable airline in the industry.
               </p>
               <div className="flex flex-wrap gap-4">
                 <Button 
                   size="lg"
-                  className="bg-gradient-firewings hover:opacity-90 transition-opacity shadow-lg" 
+                  className="bg-yellow-500 hover:bg-yellow-600 text-gray-900 font-bold shadow-lg" 
                   asChild
                 >
                   <Link to={isAuthenticated ? (user?.role === "admin" ? "/admin" : "/customer") : "/login"}>
                     {isAuthenticated ? "Go to Dashboard" : "Book a Flight"}
                   </Link>
                 </Button>
-                <Button variant="outline" size="lg" className="shadow-sm" asChild>
+                <Button variant="outline" size="lg" className="bg-white/20 text-white border-white/40 shadow-sm hover:bg-white/30" asChild>
                   <Link to="#features">
                     Learn More
                     <ChevronRight className="ml-2 h-4 w-4" />
@@ -78,51 +67,45 @@ const Index = () => {
               {/* Trust Indicators */}
               <div className="mt-10 flex flex-wrap gap-x-8 gap-y-4">
                 <div className="flex items-center">
-                  <Shield className="h-5 w-5 text-firewings-purple mr-2" />
-                  <span className="text-sm font-medium">100% Secure Booking</span>
+                  <Shield className="h-5 w-5 text-yellow-400 mr-2" />
+                  <span className="text-sm font-medium text-white">100% Secure Booking</span>
                 </div>
                 <div className="flex items-center">
-                  <CheckCircle className="h-5 w-5 text-firewings-blue mr-2" />
-                  <span className="text-sm font-medium">24/7 Customer Support</span>
+                  <CheckCircle className="h-5 w-5 text-yellow-400 mr-2" />
+                  <span className="text-sm font-medium text-white">24/7 Customer Support</span>
                 </div>
                 <div className="flex items-center">
-                  <Award className="h-5 w-5 text-amber-500 mr-2" />
-                  <span className="text-sm font-medium">#1 Airline 2025</span>
+                  <Award className="h-5 w-5 text-yellow-400 mr-2" />
+                  <span className="text-sm font-medium text-white">#1 Airline 2025</span>
                 </div>
               </div>
             </div>
             
             <div className="lg:w-1/2 flex justify-center lg:justify-end">
-              <div className="relative">
-                <img 
-                  src="https://images.unsplash.com/photo-1436491865332-7a61a109cc05?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80"
-                  alt="FireWings Airplane" 
-                  className="rounded-2xl shadow-2xl max-w-full h-auto animate-float-slow" 
-                  style={{ maxHeight: "450px" }}
-                />
-                
-                {/* Floating elements */}
-                <div className="absolute -bottom-6 -left-6 glass-card rounded-xl shadow-lg p-4 firewings-shadow animate-float">
-                  <div className="flex items-center">
-                    <div className="mr-3 p-2 bg-gradient-firewings rounded-full text-white">
-                      <Plane className="h-6 w-6" />
+              <div className="glass-card rounded-xl p-6 shadow-2xl max-w-md">
+                <h3 className="text-2xl font-bold mb-4 text-white">Quick Search</h3>
+                <div className="space-y-4">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-200 mb-1">From</label>
+                    <input type="text" className="w-full p-2 rounded-md" placeholder="Departure City" />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-200 mb-1">To</label>
+                    <input type="text" className="w-full p-2 rounded-md" placeholder="Arrival City" />
+                  </div>
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-sm font-medium text-gray-200 mb-1">Departure</label>
+                      <input type="date" className="w-full p-2 rounded-md" />
                     </div>
                     <div>
-                      <p className="text-xs text-gray-500">Next Flight</p>
-                      <p className="font-bold">NYC → LAX</p>
-                      <p className="text-xs text-gray-500">Departing in 2 hours</p>
+                      <label className="block text-sm font-medium text-gray-200 mb-1">Return</label>
+                      <input type="date" className="w-full p-2 rounded-md" />
                     </div>
                   </div>
-                </div>
-                
-                <div className="absolute -top-4 -right-4 glass-card rounded-xl shadow-lg p-3 firewings-shadow animate-float-fast">
-                  <div className="flex items-center gap-2">
-                    <Star className="h-5 w-5 text-yellow-500 fill-yellow-500" />
-                    <div>
-                      <p className="font-bold text-sm">4.9/5.0</p>
-                      <p className="text-xs text-gray-500">Customer Rating</p>
-                    </div>
-                  </div>
+                  <Button className="w-full bg-yellow-500 hover:bg-yellow-600 text-gray-900 font-bold">
+                    Search Flights
+                  </Button>
                 </div>
               </div>
             </div>
@@ -175,7 +158,7 @@ const Index = () => {
             ].map((feature, index) => (
               <Card key={index} className="border-none shadow-lg hover:shadow-xl transition-shadow card-hover">
                 <CardContent className="p-6">
-                  <div className="bg-gradient-firewings p-3 rounded-lg inline-block mb-4 text-white">
+                  <div className="fw-header p-3 rounded-lg inline-block mb-4 text-white">
                     {feature.icon}
                   </div>
                   <h3 className="text-xl font-bold mb-2">{feature.title}</h3>
@@ -198,7 +181,7 @@ const Index = () => {
               { icon: <Award className="h-8 w-8" />, value: "25+", label: "Years of Service" },
             ].map((stat, index) => (
               <div key={index} className="glass-card rounded-xl shadow-md p-6 text-center card-hover">
-                <div className="inline-flex items-center justify-center p-3 bg-gradient-firewings rounded-full text-white mb-4">
+                <div className="inline-flex items-center justify-center p-3 fw-header rounded-full text-white mb-4">
                   {stat.icon}
                 </div>
                 <div className="text-3xl font-bold mb-1">{stat.value}</div>
@@ -225,7 +208,7 @@ const Index = () => {
             <div className="flex flex-wrap justify-center gap-4">
               <Button 
                 size="lg"
-                className="bg-gradient-firewings hover:opacity-90 transition-opacity shadow-lg" 
+                className="bg-yellow-500 hover:bg-yellow-600 text-gray-900 font-bold shadow-lg" 
                 asChild
               >
                 <Link to={isAuthenticated ? (user?.role === "admin" ? "/admin" : "/customer") : "/login"}>
@@ -235,7 +218,7 @@ const Index = () => {
               <Button 
                 variant="outline" 
                 size="lg"
-                className="shadow-sm"
+                className="shadow-sm border-gray-400"
                 asChild
               >
                 <Link to={isAuthenticated ? "#" : "/register"}>

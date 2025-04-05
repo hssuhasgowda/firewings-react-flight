@@ -67,7 +67,8 @@ export default {
 					'purple': '#646cff',
 					'blue': '#61dafb',
 					'purple-light': '#a29dff',
-					'blue-light': '#9ee7ff'
+					'blue-light': '#9ee7ff',
+					'header': 'hsl(var(--firewings-blue))',
 				}
 			},
 			borderRadius: {
