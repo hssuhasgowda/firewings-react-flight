@@ -157,7 +157,7 @@
 }
 
 .airplane-hero-bg {
-  background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('/lovable-uploads/4f936d51-6035-47e1-bec7-da67a1b3b475.png');
+  background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://images.unsplash.com/photo-1524592714635-d77511a4834d?q=80&w=2069&auto=format&fit=crop');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;

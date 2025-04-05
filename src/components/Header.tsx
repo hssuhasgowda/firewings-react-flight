@@ -44,7 +44,7 @@ const Header = () => {
             <Plane className="h-10 w-10 firewings-logo-icon" strokeWidth={2} />
             <span>FireWings</span>
             <img 
-              src="https://cdn-icons-png.flaticon.com/512/5611/5611044.png" 
+              src="https://cdn-icons-png.flaticon.com/512/7721/7721738.png" 
               alt="FireWings Logo" 
               className="w-8 h-8 ml-2 animate-float" 
             />
